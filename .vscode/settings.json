@@ -1,0 +1,13 @@
+{
+  "files.associations": {
+    "stdlib.h": "c"
+  },
+  "files.insertFinalNewline": true,
+  "cmake.enabledOutputParsers": [
+    "cmake",
+    "gnuld",
+    "ghs",
+    "diab"
+  ],
+  "C_Cpp.intelliSenseEngine": "Disabled",
+}
