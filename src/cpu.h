@@ -1,22 +1,25 @@
 #pragma once
 #include "bus.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 typedef enum AddressingMode {
-    Implied,
-    Accumulator,
-    Immediate,
-    ZeroPage,
-    ZeroPageX,
-    ZeroPageY,
-    Relative,
-    Absolute,
-    AbsoluteX,
-    AbsoluteY,
-    Indirect,
-    IndirectX,
-    IndirectY
+  Implied,
+  Accumulator,
+  Immediate,
+  ZeroPage,
+  ZeroPageX,
+  ZeroPageY,
+  Relative,
+  Absolute,
+  AbsoluteX,
+  AbsoluteY,
+  Indirect,
+  IndirectX,
+  IndirectY
 } AddressingMode;
 
+// clang-format off
 static const char* OPCODES_NAMES[0x50] = {
 //         0      1      2      3      4      5      6     7       8      9       A     B      C      D      E      F
 /*0x0_*/ "ADC", "AND", "ASL", "BCC", "BCS", "BEQ", "BIT", "BMI", "BNE", "BPL", "BRK", "BVC", "BVS", "CLC", "CLD", "CLI",
@@ -46,11 +49,25 @@ static const int OPCODES[0x100][5] = {
 /*0xE_*/ {0x12,2,Immediate,2,0},{0x2B,2,IndirectX,6,0},{0x45,2,Immediate,2,0},{0x41,2,IndirectX,8,0},{0x12,2,ZeroPage,3,0}, {0x2B,2,ZeroPage,3,0}, {0x18,2,ZeroPage,5,0}, {0x41,2,ZeroPage,5,0}, {0x19,1,Implied,2,0},{0x2B,2,Immediate,2,0},{0x21,1,Implied,2,0},    {0x48,2,Immediate,2,0},{0x12,3,Absolute,4,0}, {0x2B,3,Absolute,4,0}, {0x18,3,Absolute,6,0}, {0x41,3,Absolute,6,0},
 /*0xF_*/ {0x05,2,Relative,2,1}, {0x2B,2,IndirectY,5,1},{0x42,1,Implied,0,0},  {0x41,2,IndirectY,8,0},{0x45,2,ZeroPageX,4,0},{0x2B,2,ZeroPageX,4,0},{0x18,2,ZeroPageX,6,0},{0x41,2,ZeroPageX,6,0},{0x2D,1,Implied,2,0},{0x2B,3,AbsoluteY,4,1},{0x45,1,Implied,2,0},    {0x41,3,AbsoluteY,7,0},{0x45,3,AbsoluteX,4,1},{0x2B,3,AbsoluteX,4,1},{0x18,3,AbsoluteX,7,0},{0x41,3,AbsoluteX,7,0}
 };
+// clang-format on
 
 typedef struct Bus Bus;
 typedef struct Cpu {
-    Bus* bus;
+  Bus* bus;
+
+  uint8_t a;
+  uint8_t x;
+  uint8_t y;
+  uint8_t status;
+  uint8_t sp;
+  uint16_t pc;
+
+  int cycles_remaining;
+  int cycles_total;
+  bool bounds_crossed;
 } Cpu;
+
+// clang-format on
 
 Cpu cpu_init(Bus* bus);
 void cpu_execute(Cpu* cpu);
